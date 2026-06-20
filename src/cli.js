@@ -10,6 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const templatesDir = path.join(repoRoot, "templates");
+const packageJson = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 
 const excludedDirs = new Set([
   ".git",
@@ -30,11 +31,17 @@ Usage:
   mx-agent-hub init <projectDir> [--target codex|claude|all]
   mx-agent-hub validate <projectDir> [--json]
   mx-agent-hub pack <projectDir> [--out dist/agent-hub-package.zip] [--force]
+  mx-agent-hub version
 
 Examples:
   mx-agent-hub init . --target codex
   mx-agent-hub validate .
-  mx-agent-hub pack .`);
+  mx-agent-hub pack .
+  mx-agent-hub version`);
+}
+
+function printVersion() {
+  console.log(`mx-agent-hub-adk ${packageJson.version}`);
 }
 
 function parseArgs(argv) {
@@ -560,6 +567,11 @@ async function main() {
   try {
     if (!command || command === "help" || command === "--help" || command === "-h") {
       usage();
+      return;
+    }
+
+    if (command === "version" || command === "--version" || command === "-v") {
+      printVersion();
       return;
     }
 

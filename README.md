@@ -8,6 +8,7 @@ MX Agent Hub ADK installs a local registration harness and validates static HTML
 mx-agent-hub init . --target codex
 mx-agent-hub validate .
 mx-agent-hub pack .
+mx-agent-hub version
 ```
 
 Targets:
@@ -100,7 +101,7 @@ npm link
 Confirm that the command is available:
 
 ```bash
-mx-agent-hub --help
+mx-agent-hub version
 ```
 
 You can also run without linking:
@@ -312,6 +313,18 @@ mx-agent-hub pack <projectDir> --out dist/agent-hub-package.zip
 ```
 
 Runs validation and creates a Hub upload ZIP. Blocking failures stop packaging unless `--force` is provided.
+
+### version
+
+```bash
+mx-agent-hub version
+```
+
+Prints the ADK version.
+
+```text
+mx-agent-hub-adk 0.1.0
+```
 
 ## Current MVP Checks
 
