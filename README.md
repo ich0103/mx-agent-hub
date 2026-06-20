@@ -20,7 +20,77 @@ Targets:
 
 ### 1. Install the CLI during PoC
 
-From the ADK repository:
+Replace `company/mx-agent-hub` with the actual GitHub organization and repository after this repo is pushed.
+
+Prerequisites:
+
+- Git
+- Node.js 18 or newer
+
+#### macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/company/mx-agent-hub/main/install.sh | bash
+```
+
+#### Ubuntu
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/company/mx-agent-hub/main/install.sh | bash
+```
+
+#### WSL
+
+Use the same Linux installer inside the WSL shell.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/company/mx-agent-hub/main/install.sh | bash
+```
+
+If `~/.local/bin` is not on `PATH`, add this to `~/.bashrc` or `~/.zshrc`.
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+#### Windows PowerShell
+
+Run PowerShell as a normal user.
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/company/mx-agent-hub/main/install.ps1 | iex
+```
+
+If PowerShell blocks script execution, use:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+iwr -useb https://raw.githubusercontent.com/company/mx-agent-hub/main/install.ps1 | iex
+```
+
+#### Safer install
+
+For any OS, prefer reviewing the installer before running it.
+
+macOS, Ubuntu, WSL:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/company/mx-agent-hub/main/install.sh -o install.sh
+cat install.sh
+bash install.sh
+```
+
+Windows PowerShell:
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/company/mx-agent-hub/main/install.ps1 -OutFile install.ps1
+Get-Content install.ps1
+.\install.ps1
+```
+
+#### Local development install
+
+From this ADK repository:
 
 ```bash
 cd /Users/mae/mx-agent-hub
