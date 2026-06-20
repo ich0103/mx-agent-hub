@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "Static Demo Agent",
+  "description": "A minimal static HTML app for AX Agent Hub validation.",
+  "version": "0.1.0",
+  "entry": "app/index.html",
+  "runtime": "static-html",
+  "category": "SW 개발",
+  "owner": "demo.owner",
+  "visibility": ["그룹"],
+  "hub": {
+    "sandbox": true,
+    "bridge": "postMessage",
+    "minWidth": 360,
+    "recommendedHeight": 720
+  }
+}

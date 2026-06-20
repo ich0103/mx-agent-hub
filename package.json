@@ -1,0 +1,23 @@
+{
+  "name": "mx-agent-hub",
+  "version": "0.1.0",
+  "description": "AX Agent Hub ADK for initializing, validating, and packaging static HTML agent apps.",
+  "type": "module",
+  "bin": {
+    "mx-agent-hub": "./src/cli.js"
+  },
+  "scripts": {
+    "check": "node src/cli.js validate examples/static-app",
+    "pack:example": "node src/cli.js pack examples/static-app --out dist/static-app.zip"
+  },
+  "keywords": [
+    "agent-hub",
+    "adk",
+    "harness",
+    "static-html"
+  ],
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  }
+}

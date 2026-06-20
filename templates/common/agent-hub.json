@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "My Agent App",
+  "description": "Short description for AX Agent Hub.",
+  "version": "0.1.0",
+  "entry": "app/index.html",
+  "runtime": "static-html",
+  "category": "SW 개발",
+  "owner": "owner.id",
+  "visibility": ["그룹"],
+  "hub": {
+    "sandbox": true,
+    "bridge": "postMessage",
+    "minWidth": 360,
+    "recommendedHeight": 760
+  }
+}
