@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$GithubRepository = if ($env:MX_AGENT_HUB_GITHUB_REPOSITORY) { $env:MX_AGENT_HUB_GITHUB_REPOSITORY } else { "company/mx-agent-hub" }
+$GithubRepository = if ($env:MX_AGENT_HUB_GITHUB_REPOSITORY) { $env:MX_AGENT_HUB_GITHUB_REPOSITORY } else { "ich0103/mx-agent-hub" }
 $RepoBranch = if ($env:MX_AGENT_HUB_REPO_BRANCH) { $env:MX_AGENT_HUB_REPO_BRANCH } else { "main" }
 $RepoUrl = if ($env:MX_AGENT_HUB_REPO_URL) { $env:MX_AGENT_HUB_REPO_URL } else { "https://github.com/$GithubRepository.git" }
 $InstallDir = if ($env:MX_AGENT_HUB_INSTALL_DIR) { $env:MX_AGENT_HUB_INSTALL_DIR } else { Join-Path $HOME ".mx-agent-hub" }

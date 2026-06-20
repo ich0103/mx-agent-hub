@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GITHUB_REPOSITORY="${MX_AGENT_HUB_GITHUB_REPOSITORY:-company/mx-agent-hub}"
+GITHUB_REPOSITORY="${MX_AGENT_HUB_GITHUB_REPOSITORY:-ich0103/mx-agent-hub}"
 REPO_BRANCH="${MX_AGENT_HUB_REPO_BRANCH:-main}"
 REPO_URL="${MX_AGENT_HUB_REPO_URL:-https://github.com/${GITHUB_REPOSITORY}.git}"
 INSTALL_DIR="${MX_AGENT_HUB_INSTALL_DIR:-$HOME/.mx-agent-hub}"
