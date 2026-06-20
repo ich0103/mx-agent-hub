@@ -16,6 +16,181 @@ Targets:
 - `claude`: installs `CLAUDE.md`, `.claude/`, `.mx-agent-hub/`, and `agent-hub.json`
 - `all`: installs both Codex and Claude instructions with the shared Hub harness
 
+## Usage
+
+### 1. Install the CLI during PoC
+
+From the ADK repository:
+
+```bash
+cd /Users/mae/mx-agent-hub
+npm link
+```
+
+Confirm that the command is available:
+
+```bash
+mx-agent-hub --help
+```
+
+You can also run without linking:
+
+```bash
+node /Users/mae/mx-agent-hub/src/cli.js --help
+```
+
+### 2. Add the Hub harness to an app project
+
+Go to the project that contains the HTML app you want to register.
+
+```bash
+cd /path/to/my-agent-app
+mx-agent-hub init . --target codex
+```
+
+For Claude projects:
+
+```bash
+mx-agent-hub init . --target claude
+```
+
+For both Codex and Claude:
+
+```bash
+mx-agent-hub init . --target all
+```
+
+After `init`, the project contains:
+
+```text
+agent-hub.json
+.mx-agent-hub/
+AGENTS.md or CLAUDE.md
+.codex/ or .claude/
+```
+
+### 3. Point the manifest to your HTML entry
+
+Edit `agent-hub.json`.
+
+```json
+{
+  "schemaVersion": 1,
+  "name": "My Agent App",
+  "description": "Short description for AX Agent Hub.",
+  "version": "0.1.0",
+  "entry": "app/index.html",
+  "runtime": "static-html"
+}
+```
+
+The `entry` value should point to the HTML file that AX Hub should render.
+
+Entry detection order:
+
+1. `agent-hub.json.entry`
+2. `index.html`
+3. first `.html` file found in the project
+
+### 4. Validate before uploading
+
+```bash
+mx-agent-hub validate .
+```
+
+Example successful result:
+
+```text
+Result
+  Registerable
+  PASS 5 / WARN 0 / FAIL 0
+```
+
+Example failed result:
+
+```text
+Security
+  FAIL local-only reference found (app/index.html:18)
+       http://localhost:3000/api
+
+Result
+  Not registerable
+```
+
+Fix every `FAIL` item before uploading to AX Hub. `WARN` items do not block packaging, but should be reviewed.
+
+For machine-readable output:
+
+```bash
+mx-agent-hub validate . --json
+```
+
+### 5. Create the Hub upload package
+
+```bash
+mx-agent-hub pack .
+```
+
+Default output:
+
+```text
+dist/agent-hub-package.zip
+```
+
+Custom output:
+
+```bash
+mx-agent-hub pack . --out dist/my-agent.zip
+```
+
+The `pack` command runs validation first. If validation has `FAIL` items, packaging stops.
+
+### 6. Upload to AX Hub
+
+Use the generated ZIP in the AX Hub `/app` registration screen.
+
+Recommended registration flow:
+
+1. Fill in agent name, category, owner, organization, visibility, and description.
+2. Upload the ZIP created by `mx-agent-hub pack`.
+3. Confirm that the preview opens.
+4. Register the app.
+
+## Common Workflows
+
+### Existing static site
+
+```bash
+cd my-static-site
+mx-agent-hub init . --target codex
+vim agent-hub.json
+mx-agent-hub validate .
+mx-agent-hub pack .
+```
+
+### Single HTML file
+
+```bash
+mkdir my-agent-app
+cp ~/Downloads/report.html my-agent-app/index.html
+cd my-agent-app
+mx-agent-hub init . --target codex
+mx-agent-hub validate .
+mx-agent-hub pack .
+```
+
+### Build output folder
+
+```bash
+npm run build
+cd dist
+mx-agent-hub init . --target codex
+mx-agent-hub validate .
+mx-agent-hub pack .
+```
+
+If your build output uses `main.html` or another entry file, update `agent-hub.json`.
+
 ## Install From Git
 
 During PoC, clone and link this repository.
