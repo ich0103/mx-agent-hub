@@ -48,6 +48,43 @@
         "type": "string"
       }
     },
+    "database": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "autoSplit": {
+          "type": "boolean"
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "largeHtmlThresholdMb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "largeDataThresholdMb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "databasePackageThresholdMb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxCodePackageMb": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
     "hub": {
       "type": "object",
       "additionalProperties": true,

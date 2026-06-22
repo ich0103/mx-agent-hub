@@ -8,6 +8,7 @@ MX Agent Hub ADK installs a local registration harness and validates static HTML
 mx-agent-hub init . --target codex
 mx-agent-hub validate .
 mx-agent-hub pack .
+mx-agent-hub update
 mx-agent-hub version
 ```
 
@@ -136,9 +137,15 @@ After `init`, the project contains:
 ```text
 agent-hub.json
 .mx-agent-hub/
+.mx-agent-hub/package-policy.json
 AGENTS.md or CLAUDE.md
 .codex/ or .claude/
 ```
+
+`init` also installs the default DB/data split policy. If an existing
+`index.html`, `main.html`, or other HTML file is larger than the configured
+threshold, the CLI prints a warning so large embedded data can be moved into
+`data/`, `db/`, or `datasets/` before packaging.
 
 ### 3. Point the manifest to your HTML entry
 
@@ -151,7 +158,15 @@ Edit `agent-hub.json`.
   "description": "Short description for AX Agent Hub.",
   "version": "0.1.0",
   "entry": "app/index.html",
-  "runtime": "static-html"
+  "runtime": "static-html",
+  "database": {
+    "autoSplit": true,
+    "include": ["data/**", "db/**", "datasets/**"],
+    "largeHtmlThresholdMb": 5,
+    "largeDataThresholdMb": 20,
+    "databasePackageThresholdMb": 10,
+    "maxCodePackageMb": 50
+  }
 }
 ```
 
@@ -184,6 +199,10 @@ Security
   FAIL local-only reference found (app/index.html:18)
        http://localhost:3000/api
 
+Data
+  WARN Large HTML candidate found: index.html
+       Entry HTML should stay below 5 MB.
+
 Result
   Not registerable
 ```
@@ -206,6 +225,7 @@ Default output:
 
 ```text
 dist/agent-hub-package.zip
+dist/agent-hub-package.manifest.json
 ```
 
 Custom output:
@@ -216,6 +236,19 @@ mx-agent-hub pack . --out dist/my-agent.zip
 
 The `pack` command runs validation first. If validation has `FAIL` items, packaging stops.
 
+If DB/data candidates exceed the configured threshold, `pack` splits them from
+the code package:
+
+```text
+dist/agent-hub-package.zip
+dist/agent-hub-db.zip
+dist/agent-hub-package.manifest.json
+dist/agent-hub-bundle.zip
+```
+
+Use `--split-db` to force the DB package, or `--no-split-db` to keep a single
+code ZIP for debugging.
+
 ### 6. Upload to AX Hub
 
 Use the generated ZIP in the AX Hub `/app` registration screen.
@@ -224,8 +257,9 @@ Recommended registration flow:
 
 1. Fill in agent name, category, owner, organization, visibility, and description.
 2. Upload the ZIP created by `mx-agent-hub pack`.
-3. Confirm that the preview opens.
-4. Register the app.
+3. If `agent-hub-bundle.zip` exists, upload the bundle so the Store receives both code and DB packages together.
+4. Confirm that the preview opens.
+5. Register the app.
 
 ## Common Workflows
 
@@ -310,9 +344,16 @@ Exit codes:
 ```bash
 mx-agent-hub pack <projectDir>
 mx-agent-hub pack <projectDir> --out dist/agent-hub-package.zip
+mx-agent-hub pack <projectDir> --split-db
+mx-agent-hub pack <projectDir> --no-split-db
 ```
 
 Runs validation and creates a Hub upload ZIP. Blocking failures stop packaging unless `--force` is provided.
+
+When DB/data splitting is active, the code ZIP excludes DB/data candidate files,
+`agent-hub-db.zip` contains those files with their original relative paths, and
+`agent-hub-bundle.zip` wraps the code package, DB package, and upload manifest
+for one-file Store upload.
 
 ### version
 
@@ -326,11 +367,34 @@ Prints the ADK version.
 mx-agent-hub-adk 0.1.0
 ```
 
+### update
+
+```bash
+mx-agent-hub update
+```
+
+Updates a git-based installation in place. The command fetches the configured
+branch and fast-forwards the local install checkout.
+
+Normal CLI commands check the latest published version before running. If a
+newer version is available, the CLI prints an update notice:
+
+```text
+mx-agent-hub update available: 0.1.0 -> 0.2.0
+Run: mx-agent-hub update
+```
+
+No notice is printed when the installed version matches the latest version.
+Set `MX_AGENT_HUB_DISABLE_UPDATE_CHECK=1` to skip the check in automation.
+
 ## Current MVP Checks
 
 - `agent-hub.json` parse and required fields
 - entry HTML detection from manifest, `index.html`, or first `.html`
 - local CSS/JS/image asset reference resolution
+- large entry HTML detection
+- DB/data candidate detection from `.mx-agent-hub/package-policy.json`
+- split code ZIP / DB ZIP packaging when data exceeds the configured threshold
 - secret-like string detection
 - `localhost`, `127.0.0.1`, `file://`, and local absolute path detection
 - iframe sandbox risk patterns such as `window.top` and `top.location`

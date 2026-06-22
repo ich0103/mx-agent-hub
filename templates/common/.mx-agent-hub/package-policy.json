@@ -1,0 +1,38 @@
+{
+  "autoSplitDatabase": true,
+  "largeHtmlThresholdMb": 5,
+  "largeDataThresholdMb": 20,
+  "databasePackageThresholdMb": 10,
+  "maxCodePackageMb": 50,
+  "databasePaths": [
+    "data/**",
+    "db/**",
+    "database/**",
+    "datasets/**",
+    "seed/**",
+    "seeds/**",
+    "storage/**",
+    "vector-store/**",
+    "embeddings/**"
+  ],
+  "databaseExtensions": [
+    ".db",
+    ".sqlite",
+    ".sqlite3",
+    ".duckdb",
+    ".dump",
+    ".sql",
+    ".parquet",
+    ".arrow",
+    ".feather",
+    ".ndjson",
+    ".jsonl"
+  ],
+  "conditionalDataExtensions": [
+    ".csv",
+    ".json",
+    ".xlsx"
+  ],
+  "include": [],
+  "exclude": []
+}

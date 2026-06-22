@@ -8,6 +8,15 @@
   "category": "SW 개발",
   "owner": "owner.id",
   "visibility": ["그룹"],
+  "database": {
+    "autoSplit": true,
+    "include": ["data/**", "db/**", "datasets/**"],
+    "exclude": ["app/config.json"],
+    "largeHtmlThresholdMb": 5,
+    "largeDataThresholdMb": 20,
+    "databasePackageThresholdMb": 10,
+    "maxCodePackageMb": 50
+  },
   "hub": {
     "sandbox": true,
     "bridge": "postMessage",

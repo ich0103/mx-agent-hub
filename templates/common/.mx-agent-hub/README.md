@@ -12,6 +12,7 @@ mx-agent-hub pack .
 Core files:
 
 - `rules.md`: registration rules for humans and AI coding agents
+- `package-policy.json`: DB/data split thresholds and file matching rules
 - `registration-checklist.md`: pre-upload checklist
 - `schema/agent-hub.schema.json`: manifest schema
 - `scripts/validate.mjs`: local validation wrapper
